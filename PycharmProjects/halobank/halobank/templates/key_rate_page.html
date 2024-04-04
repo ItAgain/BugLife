@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+<div class="h1">Ключевая ставка</div>
+  <div class="row">
+      <div class="col-8">
+        <div><canvas id="chart1"></canvas></div>
+      </div>
+    <div class="col-4">
+        <div class="h3">Выберите период</div>
+        <form action="{% url 'key_rate' %}" method="post">
+            {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">StartDate</label>
+            <input name="start_date" type="date" class="form-control" id="exampleFormControlInput1">
+            <label class="form-label">EndDate</label>
+            <input name="end_date" type="date" class="form-control" id="exampleFormControlInput2">
+            <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
+        </div>
+        </form>
+    </div>
+      <p>{{ length }}</p>
+  </div>
+
+<script>
+let ctx1 = document.getElementById("chart1").getContext("2d");
+let chart1 = new Chart(ctx1, {
+  type: "line",
+  data: {
+     labels: [{% for dt in dates %}"{{ dt }}",{% endfor %}],
+     datasets: [
+        {
+          label: "Значение ключевой ставки",
+          backgroundColor: "#79AEC8",
+          borderColor: "#417690",
+          data: {{ rates }}
+        }
+     ]
+  },
+  options: {
+     title: {
+        text: "Ключевая ставка",
+        display: true
+     }
+  }
+});
+</script>
+    </div>
+{% endblock %}

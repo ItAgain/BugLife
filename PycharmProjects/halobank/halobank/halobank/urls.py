@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index_view, name='index'),
+    path('key_rate/', views.key_rate_view, name='key_rate'),
+    path('metals_rate/', views.metals_rate_view, name='metals_rate'),
+    path('currency_rate/', views.currency_rate_view, name='currency_rate'),
 ]
