@@ -1,3 +1,8 @@
 from django.db import models
 
-# Create your models here.
+
+class Operation(models.Model):
+    card_id = models.IntegerField()
+    amount = models.IntegerField()
+    shop = models.CharField(max_length=256)
+    date = models.DateTimeField()

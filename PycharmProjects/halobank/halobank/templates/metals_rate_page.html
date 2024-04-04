@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="container">
-<div class="h1">Стоимость</div>
+<div class="h1">Драгоценные металлы</div>
   <div class="row">
       <div class="col-8">
         <div><canvas id="chart1"></canvas></div>
@@ -13,23 +13,23 @@
             {% csrf_token %}
             <div class="grid gap-0 row-gap-3">
                 <div class="p-2 g-col-6">
-                    <label class="form-label">StartDate</label>
-                    <input name="start_date" type="date" class="form-control" id="exampleFormControlInput1">
+                    <label class="form-label">Начальная дата</label>
+                    <input name="start_date" type="date" class="form-control" value="{{ start_date }}">
                 </div>
                 <div class="p-2 g-col-6">
-                    <label class="form-label">EndDate</label>
-                    <input name="end_date" type="date" class="form-control" id="exampleFormControlInput2">
+                    <label class="form-label">Конечная дата</label>
+                    <input name="end_date" type="date" class="form-control"  value="{{ end_date }}">
                 </div>
                 <div class="p-2 g-col-6">
                     <select name="cod_met" class="form-select form-select-lg mb-3" aria-label="Large select example">
-                      <option selected>{% if metal_name != 'null' %} {{ metal_name }} {% else %}Выбрать металл {% endif %}</option>
+                      <option value="1" selected>{% if metal_name != 'null' %} {{ metal_name }} {% else %}Выбрать металл {% endif %}</option>
                       <option value="1">Золото</option>
                       <option value="2">Серебро</option>
                       <option value="3">Платина</option>
                     </select>
                 </div>
                 <div class="p-2 g-col-6">
-                    <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
+                    <button type="submit" class="btn btn-dark mb-3">Построить график</button>
                 </div>
             </div>
         </form>
@@ -44,9 +44,9 @@ let chart1 = new Chart(ctx1, {
      labels: [{% for dt in dates %}"{{ dt }}",{% endfor %}],
      datasets: [
         {
-          label: "Стоимость металла",
-          backgroundColor: "#79AEC8",
-          borderColor: "#417690",
+          label: '{{metal_name}} (₽)',
+          backgroundColor: "#AAAAAA",
+          borderColor: "#34393e",
           data: {{ rates }}
         }
      ]

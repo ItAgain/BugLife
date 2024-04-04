@@ -9,15 +9,21 @@
       </div>
     <div class="col-4">
         <div class="h3">Выберите период</div>
-        <form action="{% url 'key_rate' %}" method="post">
+                <form action="{% url 'key_rate' %}" method="post">
             {% csrf_token %}
-        <div class="mb-3">
-            <label class="form-label">StartDate</label>
-            <input name="start_date" type="date" class="form-control" id="exampleFormControlInput1">
-            <label class="form-label">EndDate</label>
-            <input name="end_date" type="date" class="form-control" id="exampleFormControlInput2">
-            <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
-        </div>
+            <div class="grid gap-0 row-gap-3">
+                <div class="p-2 g-col-6">
+                    <label class="form-label">Начальная дата</label>
+                    <input name="start_date" type="date" class="form-control" value="{{ start_date }}">
+                </div>
+                <div class="p-2 g-col-6">
+                    <label class="form-label">Конечная дата</label>
+                    <input name="end_date" type="date" class="form-control"  value="{{ end_date }}">
+                </div>
+                <div class="p-2 g-col-6">
+                    <button type="submit" class="btn btn-dark mb-3">Построить график</button>
+                </div>
+            </div>
         </form>
     </div>
       <p>{{ length }}</p>
@@ -31,9 +37,9 @@ let chart1 = new Chart(ctx1, {
      labels: [{% for dt in dates %}"{{ dt }}",{% endfor %}],
      datasets: [
         {
-          label: "Значение ключевой ставки",
-          backgroundColor: "#79AEC8",
-          borderColor: "#417690",
+          label: "Значение ключевой ставки (%)",
+          backgroundColor: "#AAAAAA",
+          borderColor: "#34393e",
           data: {{ rates }}
         }
      ]

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+<div class="h1">Ипотека</div>
+  <div class="row">
+    <div class="col-12">
+      <form class="row g-3">
+        <div class="col-3">
+          <label for="inputEmail4" class="form-label">Стоимость дома (₽)</label>
+          <input type="number" class="form-control" id="inputEmail4">
+        </div>
+        <div class="col-4">
+          <label class="form-label">Площадь дома</label>
+          <input type="number" class="form-control">
+        </div>
+        <div class="col-5">
+          <label class="form-label">Количество спален</label>
+          <input type="number" class="form-control">
+        </div>
+        <div class="col-5">
+          <label class="form-label">Количество санузлов</label>
+          <input type="number" class="form-control">
+        </div>
+        <div class="col-4">
+          <label class="form-label">Количество этажей</label>
+          <input type="number" class="form-control">
+        </div>
+        <div class="col-3">
+          <label class="form-label">Наличие гостиной</label>
+          <select class="form-select">
+            <option selected>Нет</option>
+            <option>Да</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <label class="form-label">Наличие подвала</label>
+          <select class="form-select">
+            <option selected>Нет</option>
+            <option>Да</option>
+          </select>
+        </div>
+        <div class="col-4">
+          <label class="form-label">Наличие горячего водоснабжения</label>
+          <select class="form-select">
+            <option selected>Нет</option>
+            <option>Да</option>
+          </select>
+        </div>
+        <div class="col-5">
+          <label class="form-label">Наличие кондиционера</label>
+          <select class="form-select">
+            <option selected>Нет</option>
+            <option>Да</option>
+          </select>
+        </div>
+        <div class="col-5">
+          <label class="form-label">Количество парковочных мест</label>
+          <input type="number" class="form-control">
+        </div>
+        <div class="col-4">
+          <label class="form-label">Наличие ремонта</label>
+          <select class="form-select">
+            <option selected>Нет</option>
+            <option>Да</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <label class="form-label">Наличие мебели</label>
+          <select class="form-select">
+            <option selected>Нет</option>
+            <option>Да</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-dark">Предсказать результат заявки на ипотеку</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<script>
+let ctx1 = document.getElementById("chart1").getContext("2d");
+let chart1 = new Chart(ctx1, {
+  type: "line",
+  data: {
+     labels: [{% for dt in dates %}"{{ dt }}",{% endfor %}],
+     datasets: [
+        {
+          label: "Стоимость валюты",
+          backgroundColor: "#79AEC8",
+          borderColor: "#417690",
+          data: {{ rates }}
+        }
+     ]
+  },
+  options: {
+     title: {
+        text: "Ключевая ставка",
+        display: true
+     }
+  }
+});
+</script>
+</div>
+{% endblock %}

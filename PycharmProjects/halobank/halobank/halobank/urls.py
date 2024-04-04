@@ -24,4 +24,6 @@ urlpatterns = [
     path('key_rate/', views.key_rate_view, name='key_rate'),
     path('metals_rate/', views.metals_rate_view, name='metals_rate'),
     path('currency_rate/', views.currency_rate_view, name='currency_rate'),
+    path('card/<int:id>', views.SingleCardOperation.as_view()),
+    path('card/', views.CardOperation.as_view()),
 ]

@@ -1,5 +1,79 @@
 {% extends 'base.html' %}
+
 {% block content %}
-    {{ dates }}
-    {{ prices }}
+<div class="container">
+    <div class="row">
+    <div class="row gy-2">
+    <div class="col-7">
+        <div class="card">
+        <h3 class="card-header">Ключевая ставка</h3>
+        <div class="h3 text-center"></div>
+             <div><canvas id="chart1"></canvas></div>
+        </div>
+        <div class="p-3">
+            <button type="submit" class="btn btn-dark mb-3">Предсказать результат заявки на ипотеку</button>
+        </div>
+    </div>
+    <div class="col-5 mx-auto">
+                <div class="card">
+        <h3 class="card-header">Текущие курсы валют</h3>
+            <div class="card-body">
+            {% for valute in currencies %}
+                <h6>{{valute.0}}₽ за {{valute.1}} {{valute.2}} {{valute.3}} </h6>
+            {% endfor %}
+            </div>
+        <div><canvas id="chart"></canvas></div>
+            </div>
+    </div>
+</div>
+
+    </div>
+</div>
+<script>
+let ctx = document.getElementById("chart").getContext("2d");
+let chart = new Chart(ctx, {
+  type: "bar",
+  data: {
+     labels: [{% for valute in currencies %} "{{ valute.2 }}", {% endfor %}],
+     datasets: [
+        {
+          label: "Стоимость валют (₽)",
+          backgroundColor: "#AAAAAA",
+          borderColor: "#34393e",
+          data: [{% for valute in currencies %} "{{ valute.0 }}", {% endfor %}]
+        }
+     ]
+  },
+  options: {
+     title: {
+        text: "Gross Volume in 2020",
+        display: true
+     }
+  }
+});
+</script>
+<script>
+let ctx1 = document.getElementById("chart1").getContext("2d");
+let chart1 = new Chart(ctx1, {
+  type: "line",
+  data: {
+     labels: [{% for dt in dates %}"{{ dt }}",{% endfor %}],
+     datasets: [
+        {
+          label: "Значение ключевой ставки (%)",
+          backgroundColor: "#AAAAAA",
+          borderColor: "#34393e",
+          data: {{ rates }}
+        }
+     ]
+  },
+  options: {
+     title: {
+        text: "Ключевая ставка",
+        display: true
+     }
+  }
+});
+</script>
+    </div>
 {% endblock %}
