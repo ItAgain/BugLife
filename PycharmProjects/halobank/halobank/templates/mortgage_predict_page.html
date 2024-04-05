@@ -1,84 +1,87 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-<div class="h1">Ипотека</div>
-  <div class="row">
-    <div class="col-12">
-      <form class="row g-3">
+    <div class="container">
+<div class="h1">Проверить заявку на ипотеку</div>
+    <form class="row g-3" action="{% url 'mortgage' %}" method="post">
+      {% csrf_token %}
         <div class="col-3">
-          <label for="inputEmail4" class="form-label">Стоимость дома (₽)</label>
-          <input type="number" class="form-control" id="inputEmail4">
+          <label class="form-label" >Сумма ипотеки (₽)</label>
+          <input placeholder="{{ cur_data.credit_summ }}" name="credit_summ" type="number" max="100000000" class="form-control">
         </div>
         <div class="col-4">
           <label class="form-label">Площадь дома</label>
-          <input type="number" class="form-control">
+          <input placeholder="{{ cur_data.area }}" name="area" type="number" class="form-control">
         </div>
         <div class="col-5">
           <label class="form-label">Количество спален</label>
-          <input type="number" class="form-control">
+          <input placeholder="{{ cur_data.bedrooms }}" name="bedrooms" type="number" class="form-control">
         </div>
         <div class="col-5">
           <label class="form-label">Количество санузлов</label>
-          <input type="number" class="form-control">
+          <input placeholder="{{ cur_data.bathrooms }}" name="bathrooms" type="number" class="form-control">
         </div>
         <div class="col-4">
           <label class="form-label">Количество этажей</label>
-          <input type="number" class="form-control">
+          <input placeholder="{{ cur_data.stories }}" name="stories" type="number" class="form-control">
         </div>
         <div class="col-3">
-          <label class="form-label">Наличие гостиной</label>
-          <select class="form-select">
-            <option selected>Нет</option>
-            <option>Да</option>
+          <label class="form-label">Наличие гостевой</label>
+          <select name="guestroom" class="form-select">
+            <option value="0" selected>Нет</option>
+            <option value="1">Да</option>
           </select>
         </div>
         <div class="col-3">
           <label class="form-label">Наличие подвала</label>
-          <select class="form-select">
-            <option selected>Нет</option>
-            <option>Да</option>
+          <select name="basement" class="form-select">
+            <option value="0" selected>Нет</option>
+            <option value="1">Да</option>
           </select>
         </div>
         <div class="col-4">
           <label class="form-label">Наличие горячего водоснабжения</label>
-          <select class="form-select">
-            <option selected>Нет</option>
-            <option>Да</option>
-          </select>
-        </div>
-        <div class="col-5">
-          <label class="form-label">Наличие кондиционера</label>
-          <select class="form-select">
-            <option selected>Нет</option>
-            <option>Да</option>
+          <select name="hotwaterheating" class="form-select">
+            <option value="0" selected>Нет</option>
+            <option value="1">Да</option>
           </select>
         </div>
         <div class="col-5">
           <label class="form-label">Количество парковочных мест</label>
-          <input type="number" class="form-control">
+          <input placeholder="{{ cur_data.parking }}" name="parking" type="number" class="form-control">
+        </div>
+        <div class="col-5">
+          <label class="form-label">Наличие кондиционера</label>
+          <select name="parking" class="form-select">
+            <option value="0" selected>Нет</option>
+            <option value="1">Да</option>
+          </select>
         </div>
         <div class="col-4">
           <label class="form-label">Наличие ремонта</label>
-          <select class="form-select">
-            <option selected>Нет</option>
-            <option>Да</option>
+          <select name="prefarea" class="form-select">
+            <option value="0" selected>Нет</option>
+            <option value="1">Да</option>
           </select>
         </div>
         <div class="col-3">
           <label class="form-label">Наличие мебели</label>
-          <select class="form-select">
-            <option selected>Нет</option>
-            <option>Да</option>
+          <select name="furnishingstatus" class="form-select">
+            <option value="0" selected>Нет</option>
+            <option value="1">Да</option>
           </select>
         </div>
-        <div class="col-12">
+        <div class="col-4">
           <button type="submit" class="btn btn-dark">Предсказать результат заявки на ипотеку</button>
         </div>
-      </form>
+      <div class="col-4">
+        <input class="form-control" type="text" placeholder="{{ test_result }}" aria-label="Disabled input example" disabled>
+      </div>
+      <div class="col-4">
+        <input class="form-control" type="text" placeholder="стоимость дома {{ cur_data.price }} (₽)" aria-label="Disabled input example" disabled>
+      </div>
+    </form>
     </div>
-  </div>
-
 <script>
 let ctx1 = document.getElementById("chart1").getContext("2d");
 let chart1 = new Chart(ctx1, {
@@ -102,5 +105,5 @@ let chart1 = new Chart(ctx1, {
   }
 });
 </script>
-</div>
+    </div>
 {% endblock %}

@@ -11,24 +11,6 @@ import sklearn.model_selection
 import sklearn.linear_model
 
 
-def predict_model():
-    df = pd.read_csv('static/housing.csv')
-    df.set_index("id")
-    x = df.drop(["price"], axis=1)   # убираем из датафрейма колонку цены
-    y = df["price"]
-    x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x, y)
-    model = sklearn.linear_model.LinearRegression()
-    model.fit(x_train, y_train)
-    model.score(x_test, y_test)
-
-    data = [[1808, 10, 0, 0, 0, 10, 3, 0, 0, 0, 0, 0, 3, 1]]
-    my_test = pd.DataFrame(data, columns=[
-        'id', 'price', 'area', 'bedrooms', 'bathrooms', 'stories', 'stories.1',
-        'guestroom', 'basement', 'hotwaterheating', 'airconditioning',
-        'parking', 'prefarea', 'furnishingstatus'])
-    return model.predict(my_test)
-
-
 class CardOperation(View):
     def get(self, request):
         all_operations = Operation.objects.all()
@@ -270,3 +252,103 @@ def currency_rate_view(request):
         'end_date': f'{end_date_list[2]}-{end_date_list[1]}-{end_date_list[0]}',
     }
     return render(request, 'currency_rate_page.html', context)
+
+
+def predict_view(request):
+    df = pd.read_csv('static/housing.csv')
+    df.set_index("id")
+    x = df.drop(["price"], axis=1)   # убираем из датафрейма колонку цены
+    y = df["price"]
+    x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x, y)
+    model = sklearn.linear_model.LinearRegression()
+    model.fit(x_train, y_train)
+    model.score(x_test, y_test)
+    #data = [[1808, 10, 0, 0, 93943, 10, 3, 0, 0, 0, 0, 0, 31]]
+    test_result = ''
+    predict = 0
+    credit_summ = 0
+    area = 0,
+    bedrooms = 0
+    bathrooms = 0
+    stories = 0
+    stories_1 = 1
+    guestroom = 0
+    basement = 0
+    hotwaterheating = 0
+    airconditioning = 0
+    parking = 0
+    prefarea= 0
+    furnishingstatus = 0
+    if request.method == 'POST':
+        # price = request.POST.get('price')
+        area = request.POST.get('area')
+        if not area:
+            area = 0
+        bedrooms = request.POST.get('bedrooms')
+        if not bedrooms:
+            bedrooms = 0
+        bathrooms = request.POST.get('bathrooms')
+        if not bathrooms:
+            bathrooms = 0
+        stories = request.POST.get('stories')
+        if not stories:
+            stories = 0
+        stories_1 = 1
+        guestroom = request.POST.get('guestroom')
+        if not guestroom:
+            guestroom = 0
+        basement = request.POST.get('basement')
+        if not basement:
+            basement = 0
+        hotwaterheating = request.POST.get('hotwaterheating')
+        if not hotwaterheating:
+            hotwaterheating = 0
+        airconditioning = request.POST.get('airconditioning')
+        if not airconditioning:
+            airconditioning = 0
+        parking = request.POST.get('parking')
+        if not parking:
+            parking = 0
+        prefarea = request.POST.get('prefarea')
+        if not prefarea:
+            prefarea = 0
+        furnishingstatus = request.POST.get('furnishingstatus')
+        if not furnishingstatus:
+            furnishingstatus = 0
+
+        credit_summ = request.POST.get('credit_summ')
+        if not credit_summ:
+            credit_summ = 0
+
+        data = [[0, area, bedrooms, bathrooms, stories, stories_1, guestroom, basement, hotwaterheating,
+                 airconditioning, parking, prefarea, furnishingstatus]]
+
+        my_test = pd.DataFrame(data, columns=[
+            'id', 'area', 'bedrooms', 'bathrooms', 'stories', 'stories.1',
+            'guestroom', 'basement', 'hotwaterheating', 'airconditioning',
+            'parking', 'prefarea', 'furnishingstatus'])
+        predict = model.predict(my_test)
+        if int(credit_summ) > predict:
+            test_result = 'Ипотечный кредит одобрен'
+        else:
+            test_result = 'Ипотечный кредит отклонен'
+
+    context = {
+        'test_result': test_result,
+        'cur_data': {
+            "area": area,
+            "bedrooms": bedrooms,
+            "bathrooms": bathrooms,
+            "stories": stories,
+            "guestroom": guestroom,
+            "basement": basement,
+            "hotwaterheating": hotwaterheating,
+            "airconditioning": airconditioning,
+            "parking": parking,
+            "prefarea": prefarea,
+            "furnishingstatus": furnishingstatus,
+            "credit_summ": credit_summ,
+            "price": predict
+        }
+    }
+    return render(request, 'mortgage_predict_page.html', context)
