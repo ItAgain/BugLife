@@ -1,1 +1,1 @@
-# trinity_code
+Запустить .exe
